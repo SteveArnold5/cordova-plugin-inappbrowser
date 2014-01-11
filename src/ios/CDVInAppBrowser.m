@@ -32,6 +32,7 @@
 #define    TOOLBAR_HEIGHT 44.0
 #define    LOCATIONBAR_HEIGHT 21.0
 #define    FOOTER_HEIGHT ((TOOLBAR_HEIGHT) + (LOCATIONBAR_HEIGHT))
+#define    STATUSBAR_HEIGHT 20
 
 #pragma mark CDVInAppBrowser
 
@@ -426,6 +427,11 @@
     CGRect webViewBounds = self.view.bounds;
     BOOL toolbarIsAtBottom = ![_browserOptions.toolbarposition isEqualToString:kInAppBrowserToolbarBarPositionTop];
     webViewBounds.size.height -= _browserOptions.location ? FOOTER_HEIGHT : TOOLBAR_HEIGHT;
+    if (IsAtLeastiOSVersion(@"7.0")) {
+        webViewBounds.origin.y = STATUSBAR_HEIGHT;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+        webViewBounds.size.height -= STATUSBAR_HEIGHT;
+    }
     self.webView = [[UIWebView alloc] initWithFrame:webViewBounds];
     
     self.webView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
